@@ -27,6 +27,9 @@ export class ClientEntity {
 
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
+
+  @Prop({ type: Boolean, default: true })
+  isActive: boolean;
 }
 
 const ClientSchema = SchemaFactory.createForClass(ClientEntity);
