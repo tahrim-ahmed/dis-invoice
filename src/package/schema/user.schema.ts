@@ -8,6 +8,9 @@ export class UserEntity {
 
   @Prop({ type: String, required: true })
   password: string;
+
+  @Prop({ type: Date, default: Date.now })
+  createdAt: Date;
 }
 
 const UserSchema = SchemaFactory.createForClass(UserEntity);

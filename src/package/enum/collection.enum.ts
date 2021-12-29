@@ -1,3 +1,5 @@
 export enum CollectionEnum {
-    USERS = 'users'
+  USERS = 'users',
+  CLIENTS = 'clients',
+  INVOICES = 'invoices',
 }
