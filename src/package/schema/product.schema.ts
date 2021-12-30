@@ -1,8 +1,12 @@
 import * as mongoose from 'mongoose';
+import { SchemaTypes, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transform } from 'class-transformer';
+import { CollectionEnum } from '../enum/collection.enum';
 
-@Schema()
+@Schema({
+  timestamps: true,
+})
 export class ProductEntity {
   @Transform(({ value }) => value.toString())
   _id: string;
@@ -13,11 +17,11 @@ export class ProductEntity {
   @Prop({ type: String, required: true })
   packSize: string;
 
-  @Prop({ type: Date, default: Date.now })
-  createdAt: Date;
-
   @Prop({ type: Boolean, default: true })
   isActive: boolean;
+
+  @Prop({ type: SchemaTypes.ObjectId, ref: CollectionEnum.USERS })
+  createdBy: Types.ObjectId;
 }
 
 const ProductSchema = SchemaFactory.createForClass(ProductEntity);

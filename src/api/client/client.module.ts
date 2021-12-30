@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { ClientController } from './controller/client.controller';
 import { ClientService } from './services/client.service';
 import ClientSchema, { ClientEntity } from '../../package/schema/client.schema';
+import { CreatedByAppendService } from '../../package/service/created-by-append.service';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import ClientSchema, { ClientEntity } from '../../package/schema/client.schema';
     ]),
   ],
   controllers: [ClientController],
-  providers: [ClientService],
+  providers: [ClientService, CreatedByAppendService],
 })
 export class ClientModule {}

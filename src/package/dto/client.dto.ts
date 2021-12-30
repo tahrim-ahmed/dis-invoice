@@ -1,7 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
+import { BaseDto } from './core/base.dto';
 
-export class ClientDto {
+export class ClientDto extends BaseDto {
   @ApiProperty()
   @MaxLength(100, { message: 'Maximum 100 characters supported' })
   code: string;
@@ -31,7 +38,8 @@ export class ClientDto {
   shipping: string;
 
   @ApiProperty()
-  @IsString({ message: 'Must be a string' })
+  @IsOptional()
+  @IsEmail({ message: 'Must be a email' })
   @MaxLength(100, { message: 'Maximum 100 characters supported' })
   email: string;
 }

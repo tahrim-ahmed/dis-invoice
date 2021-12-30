@@ -1,16 +1,24 @@
 import * as mongoose from 'mongoose';
+import { SchemaTypes, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Transform } from 'class-transformer';
+import { CollectionEnum } from '../enum/collection.enum';
 
-@Schema()
+@Schema({
+  timestamps: true,
+})
 export class UserEntity {
+  @Transform(({ value }) => value.toString())
+  _id: string;
+
   @Prop({ type: String, required: true })
   email: string;
 
   @Prop({ type: String, required: true })
   password: string;
 
-  @Prop({ type: Date, default: Date.now })
-  createdAt: Date;
+  @Prop({ type: SchemaTypes.ObjectId, ref: CollectionEnum.USERS })
+  createdBy: Types.ObjectId;
 }
 
 const UserSchema = SchemaFactory.createForClass(UserEntity);

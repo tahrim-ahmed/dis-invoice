@@ -6,6 +6,7 @@ import InvoiceSchema, {
 } from '../../package/schema/invoice.schema';
 import { InvoiceService } from './services/invoice.service';
 import { InvoiceController } from './controller/invoice.controller';
+import { CreatedByAppendService } from '../../package/service/created-by-append.service';
 
 @Module({
   imports: [
@@ -18,6 +19,6 @@ import { InvoiceController } from './controller/invoice.controller';
     ]),
   ],
   controllers: [InvoiceController],
-  providers: [InvoiceService],
+  providers: [InvoiceService, CreatedByAppendService],
 })
 export class InvoiceModule {}

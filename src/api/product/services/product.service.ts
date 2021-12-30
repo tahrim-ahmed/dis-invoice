@@ -6,6 +6,7 @@ import {
   ProductEntity,
 } from '../../../package/schema/product.schema';
 import { ProductDto } from '../../../package/dto/product.dto';
+import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
 
 @Injectable()
 export class ProductService {
@@ -14,6 +15,7 @@ export class ProductService {
   constructor(
     @InjectModel(ProductEntity.name)
     private readonly productModel: Model<ProductDocument>,
+    private readonly createdByAppendService: CreatedByAppendService,
   ) {}
 
   createProduct = async (
@@ -21,6 +23,8 @@ export class ProductService {
   ): Promise<ProductDocument> => {
     // saving and returning the saved data in mongo db
     try {
+      productInput =
+        this.createdByAppendService.createdBy<ProductDto>(productInput);
       return await this.productModel.create(productInput);
     } catch (e) {
       return e;

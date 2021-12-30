@@ -1,8 +1,12 @@
 import * as mongoose from 'mongoose';
+import { SchemaTypes, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transform } from 'class-transformer';
+import { CollectionEnum } from '../enum/collection.enum';
 
-@Schema()
+@Schema({
+  timestamps: true,
+})
 export class ClientEntity {
   @Transform(({ value }) => value.toString())
   _id: string;
@@ -25,11 +29,11 @@ export class ClientEntity {
   @Prop({ type: String, required: false })
   email: string;
 
-  @Prop({ type: Date, default: Date.now })
-  createdAt: Date;
-
   @Prop({ type: Boolean, default: true })
   isActive: boolean;
+
+  @Prop({ type: SchemaTypes.ObjectId, ref: CollectionEnum.USERS })
+  createdBy: Types.ObjectId;
 }
 
 const ClientSchema = SchemaFactory.createForClass(ClientEntity);

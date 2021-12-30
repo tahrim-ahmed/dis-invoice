@@ -6,6 +6,7 @@ import { ProductService } from './services/product.service';
 import ProductSchema, {
   ProductEntity,
 } from '../../package/schema/product.schema';
+import { CreatedByAppendService } from '../../package/service/created-by-append.service';
 
 @Module({
   imports: [
@@ -18,6 +19,6 @@ import ProductSchema, {
     ]),
   ],
   controllers: [ProductController],
-  providers: [ProductService],
+  providers: [ProductService, CreatedByAppendService],
 })
 export class ProductModule {}

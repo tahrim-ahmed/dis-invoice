@@ -1,9 +1,10 @@
 import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { InvoiceDto } from '../../../package/dto/invoice.dto';
 import { InvoiceService } from '../services/invoice.service';
 
 @ApiTags('Invoice')
+@ApiBearerAuth()
 @Controller('invoice')
 export class InvoiceController {
   constructor(private readonly invoiceService: InvoiceService) {}

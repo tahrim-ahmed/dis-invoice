@@ -1,25 +1,23 @@
 import { Allow } from 'class-validator';
 import { ActiveStatus } from '../../enum/active.enum';
+import { Types } from 'mongoose';
 
 export class BaseDto {
   @Allow()
-  id: string;
+  _id: string | Types.ObjectId;
 
   @Allow()
-  version: number;
+  __v: number;
 
   @Allow()
   isActive: ActiveStatus;
 
   @Allow()
-  createdBy: string | null;
+  createdBy: string | null | Types.ObjectId;
 
   @Allow()
-  updatedBy: string | null;
+  createdAt: Date;
 
   @Allow()
-  createAt: Date | null;
-
-  @Allow()
-  updatedAt: Date | null;
+  updatedAt: Date;
 }

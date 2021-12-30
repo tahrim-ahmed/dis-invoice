@@ -6,6 +6,7 @@ import { UserController } from './controller/user.controller';
 import { UserService } from './services/user.service';
 import { BcryptService } from './services/bcrypt.service';
 import { NotFoundService } from '../../package/service/not-found.service';
+import { CreatedByAppendService } from '../../package/service/created-by-append.service';
 
 @Module({
   imports: [
@@ -18,6 +19,11 @@ import { NotFoundService } from '../../package/service/not-found.service';
     ]),
   ],
   controllers: [UserController],
-  providers: [UserService, BcryptService, NotFoundService],
+  providers: [
+    UserService,
+    BcryptService,
+    NotFoundService,
+    CreatedByAppendService,
+  ],
 })
 export class UserModule {}

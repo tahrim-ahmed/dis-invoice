@@ -1,5 +1,5 @@
 import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserService } from '../services/user.service';
 import { LoginDto } from '../../../package/dto/login.dto';
 import { UserDto } from '../../../package/dto/user.dto';
@@ -22,6 +22,7 @@ export class UserController {
     return await this.userService.login(loginDto);
   }
 
+  @ApiBearerAuth()
   @Post('register')
   async register(
     @Body(

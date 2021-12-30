@@ -6,6 +6,7 @@ import {
   InvoiceEntity,
 } from '../../../package/schema/invoice.schema';
 import { InvoiceDto } from '../../../package/dto/invoice.dto';
+import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
 
 @Injectable()
 export class InvoiceService {
@@ -14,6 +15,7 @@ export class InvoiceService {
   constructor(
     @InjectModel(InvoiceEntity.name)
     private readonly invoiceModel: Model<InvoiceDocument>,
+    private readonly createdByAppendService: CreatedByAppendService,
   ) {}
 
   createInvoice = async (
@@ -21,6 +23,9 @@ export class InvoiceService {
   ): Promise<InvoiceDocument> => {
     // saving and returning the saved data in mongo db
     try {
+      invoiceInput.products = [...new Set(invoiceInput.products)];
+      invoiceInput =
+        this.createdByAppendService.createdBy<InvoiceDto>(invoiceInput);
       return await this.invoiceModel.create(invoiceInput);
     } catch (e) {
       return e;

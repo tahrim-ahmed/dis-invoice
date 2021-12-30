@@ -1,11 +1,12 @@
 import * as mongoose from 'mongoose';
+import { SchemaTypes, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
-import { ClientEntity } from './client.schema';
-import { Type } from 'class-transformer';
-import { ProductEntity } from './product.schema';
+import { CollectionEnum } from '../enum/collection.enum';
+import { InvoiceProductDto } from '../dto/invoice-product.dto';
 
-@Schema()
+@Schema({
+  timestamps: true,
+})
 export class InvoiceEntity {
   @Prop({ type: String, required: true })
   invoiceNo: string;
@@ -19,24 +20,22 @@ export class InvoiceEntity {
   @Prop({ type: Date, required: false })
   creditPeriod: Date;
 
-  @Prop({ type: Date, default: Date.now })
-  createdAt: Date;
-
   @Prop({ type: Boolean, default: true })
   isActive: boolean;
 
-  @Prop({ type: Types.ObjectId, ref: ClientEntity.name })
-  @Type(() => ClientEntity)
-  client: ClientEntity;
+  @Prop({ type: SchemaTypes.ObjectId, ref: CollectionEnum.CLIENTS })
+  client: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: ProductEntity.name })
-  @Type(() => ProductEntity)
-  product: ProductEntity[];
+  @Prop({ type: [Object] })
+  products: InvoiceProductDto[];
+
+  @Prop({ type: SchemaTypes.ObjectId, ref: CollectionEnum.USERS })
+  createdBy: Types.ObjectId;
 }
 
 const InvoiceSchema = SchemaFactory.createForClass(InvoiceEntity);
 
-InvoiceSchema.index({ code: 1 });
+InvoiceSchema.index({ invoiceNo: 1 });
 
 export type InvoiceDocument = InvoiceEntity & mongoose.Document;
 

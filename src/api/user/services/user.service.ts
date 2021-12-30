@@ -9,6 +9,7 @@ import { NotFoundService } from '../../../package/service/not-found.service';
 import { UserDto } from '../../../package/dto/user.dto';
 import { TokenDto } from '../../../package/dto/token.dto';
 import { LoginDto } from '../../../package/dto/login.dto';
+import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
 
 @Injectable()
 export class UserService {
@@ -19,16 +20,16 @@ export class UserService {
     private readonly userModel: Model<UserDocument>,
     private readonly bcryptService: BcryptService,
     private readonly notFoundService: NotFoundService,
+    private readonly createdByAppendService: CreatedByAppendService,
   ) {}
 
   register = async (userInput: UserDto): Promise<UserDocument> => {
-    // encrypting password
-    userInput.password = await this.bcryptService.hashPassword(
-      userInput.password,
-    );
-
     // saving and returning the saved user in mongo db
     try {
+      userInput.password = await this.bcryptService.hashPassword(
+        userInput.password,
+      );
+      userInput = this.createdByAppendService.createdBy<UserDto>(userInput);
       return await this.userModel.create(userInput);
     } catch (e) {
       return e;
@@ -78,34 +79,16 @@ export class UserService {
   };
 
   generateToken = (isRemembered: number, user: UserDocument): TokenDto => {
-    const privateKEY = fs.readFileSync(
-      __dirname + '/../../../../env/jwtRS256.key',
-    );
-
-    // set only email from user in jwt access token payload
-    const payload = {
-      email: user.email,
-    };
+    const privateKEY = fs.readFileSync('env/jwtRS256.key');
 
     const token = new TokenDto();
 
-    // remember for 1h or 1d
-    if (Number(isRemembered) === 1) {
-      token.accessToken = jwt.sign({ ...payload }, privateKEY, {
-        expiresIn: '1d',
-        algorithm: 'RS256',
-      });
-      token.timeout = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-    } else {
-      token.accessToken = jwt.sign({ ...payload }, privateKEY, {
-        expiresIn: '1h',
-        algorithm: 'RS256',
-      });
-      // in utc
-      token.timeout = new Date(new Date().getTime() + 60 * 60 * 1000);
-    }
-
-    this.logger.log('access token: ' + token.accessToken);
+    token.accessToken = jwt.sign({ ...user }, privateKEY, {
+      expiresIn: Number(isRemembered) === 1 ? '1d' : '1h',
+      algorithm: 'RS256',
+    });
+    const timeOut = Number(isRemembered) === 1 ? 24 : 1;
+    token.timeout = new Date(new Date().getTime() + timeOut * 60 * 60 * 1000);
 
     return token;
   };

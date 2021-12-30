@@ -1,9 +1,10 @@
 import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ProductService } from '../services/product.service';
 import { ProductDto } from '../../../package/dto/product.dto';
 
 @ApiTags('Product')
+@ApiBearerAuth()
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
