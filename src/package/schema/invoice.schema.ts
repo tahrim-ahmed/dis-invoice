@@ -3,6 +3,7 @@ import { SchemaTypes, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { CollectionEnum } from '../enum/collection.enum';
 import { InvoiceProductDto } from '../dto/invoice-product.dto';
+import InvoiceProductSchema from './invoice-product.schema';
 
 @Schema({
   timestamps: true,
@@ -26,7 +27,7 @@ export class InvoiceEntity {
   @Prop({ type: SchemaTypes.ObjectId, ref: CollectionEnum.CLIENTS })
   client: Types.ObjectId;
 
-  @Prop({ type: [Object] })
+  @Prop({ type: [InvoiceProductSchema] })
   products: InvoiceProductDto[];
 
   @Prop({ type: SchemaTypes.ObjectId, ref: CollectionEnum.USERS })
