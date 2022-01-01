@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsMongoId, IsNotEmpty, IsNumber } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class InvoiceProductDto {
   @ApiProperty()
   @IsNotEmpty({ message: 'Must be non empty' })
+  @IsMongoId()
   productID: Types.ObjectId;
 
   @ApiProperty()
