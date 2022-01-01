@@ -38,6 +38,18 @@ const InvoiceSchema = SchemaFactory.createForClass(InvoiceEntity);
 
 InvoiceSchema.index({ invoiceNo: 1 });
 
+InvoiceSchema.path('invoiceNo').validate({
+  validator: async function (value) {
+    const count = await this.model(InvoiceEntity.name).countDocuments({
+      invoiceNo: value,
+    });
+    return !count;
+  },
+  message: (props) => {
+    return `'${props.value}' already exist`;
+  },
+});
+
 export type InvoiceDocument = InvoiceEntity & mongoose.Document;
 
 export default InvoiceSchema;

@@ -7,6 +7,7 @@ import {
 } from '../../../package/schema/invoice.schema';
 import { InvoiceDto } from '../../../package/dto/invoice.dto';
 import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class InvoiceService {
@@ -31,6 +32,10 @@ export class InvoiceService {
       return e;
     }
   };
+
+  async findAll(): Promise<InvoiceEntity[]> {
+    return this.invoiceModel.find().exec();
+  }
 
   /*************** custom () **********/
 }
