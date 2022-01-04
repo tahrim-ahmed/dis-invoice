@@ -2,16 +2,16 @@ import {
   Body,
   Controller,
   Get,
-  HttpStatus,
   Post,
+  Query,
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { InvoiceDto } from '../../../package/dto/invoice.dto';
 import { InvoiceService } from '../services/invoice.service';
-import { ResponseDto } from '../../../package/dto/response/response.dto';
 import { ResponseService } from '../../../package/service/response.service';
 import { InvoiceEntity } from '../../../package/schema/invoice.schema';
+import { PaginationDto } from '../../../package/dto/pagination/pagination.dto';
 
 @ApiTags('Invoice')
 @ApiBearerAuth()
@@ -36,7 +36,9 @@ export class InvoiceController {
   }
 
   @Get('pagination')
-  async findAll(): Promise<InvoiceEntity[]> {
-    return this.invoiceService.findAll();
+  async pagination(
+    @Query() { skip, limit }: PaginationDto,
+  ): Promise<InvoiceEntity[]> {
+    return this.invoiceService.pagination(skip, limit);
   }
 }

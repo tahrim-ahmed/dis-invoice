@@ -7,7 +7,6 @@ import {
 } from '../../../package/schema/invoice.schema';
 import { InvoiceDto } from '../../../package/dto/invoice.dto';
 import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
-import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class InvoiceService {
@@ -33,8 +32,19 @@ export class InvoiceService {
     }
   };
 
-  async findAll(): Promise<InvoiceEntity[]> {
-    return this.invoiceModel.find().exec();
+  async pagination(skip = 0, limit?: number): Promise<InvoiceEntity[]> {
+    const query = this.invoiceModel
+      .find()
+      .skip(skip)
+      .populate('createdBy', 'email')
+      .populate('products.productID', 'productName packSize')
+      .populate('client', 'code name contact billing shipping email address');
+
+    if (limit) {
+      query.limit(limit);
+    }
+
+    return query;
   }
 
   /*************** custom () **********/

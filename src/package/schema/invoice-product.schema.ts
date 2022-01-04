@@ -1,11 +1,13 @@
-import * as mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes, Types } from 'mongoose';
 import { CollectionEnum } from '../enum/collection.enum';
+import { ProductEntity } from './product.schema';
 
-@Schema()
+@Schema({
+  _id: false,
+})
 export class InvoiceProductEntity {
-  @Prop({ type: SchemaTypes.ObjectId, ref: CollectionEnum.PRODUCTS })
+  @Prop({ type: SchemaTypes.ObjectId, ref: ProductEntity.name })
   productID: Types.ObjectId;
 
   @Prop({ type: Number, required: true })
@@ -19,7 +21,5 @@ export class InvoiceProductEntity {
 }
 
 const InvoiceProductSchema = SchemaFactory.createForClass(InvoiceProductEntity);
-
-export type InvoiceProductDocument = InvoiceProductEntity & mongoose.Document;
 
 export default InvoiceProductSchema;

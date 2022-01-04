@@ -17,7 +17,7 @@ export class UserEntity {
   @Prop({ type: String, required: true })
   password: string;
 
-  @Prop({ type: SchemaTypes.ObjectId, ref: CollectionEnum.USERS })
+  @Prop({ type: SchemaTypes.ObjectId, ref: UserEntity.name })
   createdBy: Types.ObjectId;
 }
 
