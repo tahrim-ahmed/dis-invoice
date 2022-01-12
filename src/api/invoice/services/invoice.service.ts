@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import {
@@ -31,6 +31,34 @@ export class InvoiceService {
       return e;
     }
   };
+
+  async pagination(page: number, limit?: number): Promise<InvoiceEntity[]> {
+    const query = this.invoiceModel
+      .find()
+      .skip((page - 1) * limit)
+      .populate('createdBy', 'email')
+      .populate('products.productID', 'productName packSize')
+      .populate('client', 'code name contact billing shipping email address');
+
+    if (limit) {
+      query.limit(limit);
+    }
+
+    return query;
+  }
+
+  async update(id: string, invoiceData: InvoiceDto) {
+    const post = await this.invoiceModel
+      .findByIdAndUpdate(id, invoiceData)
+      .setOptions({ overwrite: true, new: true })
+      .populate('createdBy')
+      .populate('products.productID')
+      .populate('client');
+    if (!post) {
+      throw new NotFoundException();
+    }
+    return post;
+  }
 
   /*************** custom () **********/
 }

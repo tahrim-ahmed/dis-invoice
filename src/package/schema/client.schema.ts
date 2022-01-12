@@ -3,6 +3,7 @@ import { SchemaTypes, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transform } from 'class-transformer';
 import { CollectionEnum } from '../enum/collection.enum';
+import { UserEntity } from './user.schema';
 
 @Schema({
   timestamps: true,
@@ -32,7 +33,7 @@ export class ClientEntity {
   @Prop({ type: Boolean, default: true })
   isActive: boolean;
 
-  @Prop({ type: SchemaTypes.ObjectId, ref: CollectionEnum.USERS })
+  @Prop({ type: SchemaTypes.ObjectId, ref: UserEntity.name })
   createdBy: Types.ObjectId;
 }
 
