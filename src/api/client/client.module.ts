@@ -7,16 +7,16 @@ import ClientSchema, { ClientEntity } from '../../package/schema/client.schema';
 import { CreatedByAppendService } from '../../package/service/created-by-append.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      {
-        name: ClientEntity.name,
-        schema: ClientSchema,
-        collection: CollectionEnum.CLIENTS,
-      },
-    ]),
-  ],
-  controllers: [ClientController],
-  providers: [ClientService, CreatedByAppendService],
+    imports: [
+        MongooseModule.forFeature([
+            {
+                name: ClientEntity.name,
+                schema: ClientSchema,
+                collection: CollectionEnum.CLIENTS,
+            },
+        ]),
+    ],
+    controllers: [ClientController],
+    providers: [ClientService, CreatedByAppendService],
 })
 export class ClientModule {}

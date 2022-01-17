@@ -3,19 +3,20 @@ import { SchemaTypes, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transform } from 'class-transformer';
 import { UserEntity } from './user.schema';
+import { ProductEntity } from './product.schema';
 
 @Schema({
     timestamps: true,
 })
-export class ProductEntity {
+export class StockEntity {
     @Transform(({ value }) => value.toString())
     _id: string;
 
-    @Prop({ type: String, required: true })
-    productName: string;
+    @Prop({ type: SchemaTypes.ObjectId, ref: ProductEntity.name })
+    product: Types.ObjectId;
 
-    @Prop({ type: String, required: true })
-    packSize: string;
+    @Prop({ type: Number, required: true })
+    inStock: number;
 
     @Prop({ type: Boolean, default: true })
     isActive: boolean;
@@ -24,10 +25,10 @@ export class ProductEntity {
     createdBy: Types.ObjectId;
 }
 
-const ProductSchema = SchemaFactory.createForClass(ProductEntity);
+const StockSchema = SchemaFactory.createForClass(StockEntity);
 
-ProductSchema.index({ code: 1 });
+StockSchema.index({ product: 1 });
 
-export type ProductDocument = ProductEntity & mongoose.Document;
+export type StockDocument = StockEntity & mongoose.Document;
 
-export default ProductSchema;
+export default StockSchema;

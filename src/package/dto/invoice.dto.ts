@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Allow, IsArray, IsDateString, IsDefined, IsEnum, IsMongoId, IsNotEmpty, IsNumber, IsString, MaxLength, ValidateIf } from 'class-validator';
+import { Allow, IsArray, IsDateString, IsDefined, IsEnum, IsMongoId, IsNotEmpty, IsNumber, ValidateIf } from 'class-validator';
 import { Types } from 'mongoose';
 import { PaymentEnum } from '../enum/payment.enum';
 import { BaseDto } from './core/base.dto';

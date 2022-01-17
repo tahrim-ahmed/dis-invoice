@@ -1,3 +1,3 @@
 export class DeleteDto {
-  constructor(public isDeleted: boolean) {}
+    constructor(public isDeleted: boolean) {}
 }

@@ -7,11 +7,11 @@ const envFilePath = [`env/${!ENV ? `.env.production` : `.env.${ENV}`}`];
 
 // setting global env module
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath,
-    }),
-  ],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath,
+        }),
+    ],
 })
 export class EnvConfigModule {}

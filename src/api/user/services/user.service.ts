@@ -13,83 +13,75 @@ import { CreatedByAppendService } from '../../../package/service/created-by-appe
 
 @Injectable()
 export class UserService {
-  private readonly logger = new Logger(UserService.name);
+    private readonly logger = new Logger(UserService.name);
 
-  constructor(
-    @InjectModel(UserEntity.name)
-    private readonly userModel: Model<UserDocument>,
-    private readonly bcryptService: BcryptService,
-    private readonly notFoundService: NotFoundService,
-    private readonly createdByAppendService: CreatedByAppendService,
-  ) {}
+    constructor(
+        @InjectModel(UserEntity.name)
+        private readonly userModel: Model<UserDocument>,
+        private readonly bcryptService: BcryptService,
+        private readonly notFoundService: NotFoundService,
+        private readonly createdByAppendService: CreatedByAppendService,
+    ) {}
 
-  register = async (userInput: UserDto): Promise<UserDocument> => {
-    // saving and returning the saved user in mongo db
-    try {
-      userInput.password = await this.bcryptService.hashPassword(
-        userInput.password,
-      );
-      userInput = this.createdByAppendService.createdBy<UserDto>(userInput);
-      return await this.userModel.create(userInput);
-    } catch (e) {
-      return e;
-    }
-  };
+    register = async (userInput: UserDto): Promise<UserDocument> => {
+        // saving and returning the saved user in mongo db
+        try {
+            userInput.password = await this.bcryptService.hashPassword(userInput.password);
+            userInput = this.createdByAppendService.createdBy<UserDto>(userInput);
+            return await this.userModel.create(userInput);
+        } catch (e) {
+            return e;
+        }
+    };
 
-  login = async (loginInput: LoginDto): Promise<TokenDto> => {
-    const user = await this.validateUser(loginInput);
-    try {
-      return this.generateToken(loginInput.isRemembered, user);
-    } catch (e) {
-      return e;
-    }
-  };
+    login = async (loginInput: LoginDto): Promise<TokenDto> => {
+        const user = await this.validateUser(loginInput);
+        try {
+            return this.generateToken(loginInput.isRemembered, user);
+        } catch (e) {
+            return e;
+        }
+    };
 
-  /*************** custom () **********/
-  validateUser = async (loginInput: LoginDto): Promise<UserDocument> => {
-    const users: UserDocument[] = await this.userModel
-      .aggregate([
-        {
-          $match: {
-            email: loginInput.email,
-          },
-        },
-      ])
-      .exec();
+    /*************** custom () **********/
+    validateUser = async (loginInput: LoginDto): Promise<UserDocument> => {
+        const users: UserDocument[] = await this.userModel
+            .aggregate([
+                {
+                    $match: {
+                        email: loginInput.email,
+                    },
+                },
+            ])
+            .exec();
 
-    this.notFoundService.notFound(users, 'No such user found!!');
+        this.notFoundService.notFound(users, 'No such user found!!');
 
-    await this.validatePassword(loginInput.password, users[0].password);
+        await this.validatePassword(loginInput.password, users[0].password);
 
-    return users[0];
-  };
+        return users[0];
+    };
 
-  validatePassword = async (
-    givenPassword: string,
-    hashPassword: string,
-  ): Promise<void> => {
-    const isPasswordMatched = await this.bcryptService.comparePassword(
-      givenPassword,
-      hashPassword,
-    );
+    validatePassword = async (givenPassword: string, hashPassword: string): Promise<void> => {
+        const isPasswordMatched = await this.bcryptService.comparePassword(givenPassword, hashPassword);
 
-    if (!isPasswordMatched) {
-      throw new UnauthorizedException('User password is not valid');
-    }
-  };
+        if (!isPasswordMatched) {
+            throw new UnauthorizedException('User password is not valid');
+        }
+    };
 
-  generateToken = (isRemembered: number, user: UserDocument): TokenDto => {
-    const privateKEY = fs.readFileSync('env/jwtRS256.key');
+    generateToken = (isRemembered: number, user: UserDocument): TokenDto => {
+        const privateKEY = fs.readFileSync('env/jwtRS256.key');
 
-    const token = new TokenDto();
+        const token = new TokenDto();
 
-    token.accessToken = jwt.sign({ ...user }, privateKEY, {
-      expiresIn: Number(isRemembered) === 1 ? '1d' : '1h',
-      algorithm: 'RS256',
-    });
-    const timeOut = Number(isRemembered) === 1 ? 24 : 1;
-    token.timeout = new Date(new Date().getTime() + timeOut * 60 * 60 * 1000);
+        token.accessToken = jwt.sign({ ...user }, privateKEY, {
+            expiresIn: Number(isRemembered) === 1 ? '1d' : '1h',
+            algorithm: 'RS256',
+        });
+        const timeOut = Number(isRemembered) === 1 ? 24 : 1;
+        token.timeout = new Date(new Date().getTime() + timeOut * 60 * 60 * 1000);
 
-    return token;
-  };
+        return token;
+    };
 }

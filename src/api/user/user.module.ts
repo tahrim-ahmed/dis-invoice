@@ -9,21 +9,16 @@ import { NotFoundService } from '../../package/service/not-found.service';
 import { CreatedByAppendService } from '../../package/service/created-by-append.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      {
-        name: UserEntity.name,
-        schema: UserSchema,
-        collection: CollectionEnum.USERS,
-      },
-    ]),
-  ],
-  controllers: [UserController],
-  providers: [
-    UserService,
-    BcryptService,
-    NotFoundService,
-    CreatedByAppendService,
-  ],
+    imports: [
+        MongooseModule.forFeature([
+            {
+                name: UserEntity.name,
+                schema: UserSchema,
+                collection: CollectionEnum.USERS,
+            },
+        ]),
+    ],
+    controllers: [UserController],
+    providers: [UserService, BcryptService, NotFoundService, CreatedByAppendService],
 })
 export class UserModule {}
