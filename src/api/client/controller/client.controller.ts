@@ -31,6 +31,11 @@ export class ClientController {
         return this.clientService.pagination(skip, limit);
     }
 
+    @Get(':id')
+    async findById(@Param('id') id: string): Promise<ClientEntity[]> {
+        return this.clientService.findById(id);
+    }
+
     @Put('update/:id')
     async update(
         @Param('id', new ParseObjectIdPipe()) id: string,
@@ -43,11 +48,6 @@ export class ClientController {
             clientDto: ClientDto,
     ) {
         return await this.clientService.update(id, clientDto);
-    }
-
-    @Get(':id')
-    async findById(@Param('id') id: string): Promise<ClientEntity[]> {
-        return this.clientService.findById(id);
     }
 
     @Delete(':id/delete')
