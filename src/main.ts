@@ -5,27 +5,27 @@ import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  const logger = new Logger('Invoice-api-bootstrap');
+    const logger = new Logger('Invoice-api-bootstrap');
 
-  const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api/v1');
+    const app = await NestFactory.create(AppModule);
+    app.setGlobalPrefix('api/v1');
 
-  const config = new DocumentBuilder()
-    .setTitle('Invoice')
-    .setDescription('The Invoice API description')
-    .setVersion('1.0')
-    .addTag('shako-invoice')
-    .addBearerAuth()
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('dis-api', app, document);
+    const config = new DocumentBuilder()
+        .setTitle('Invoice')
+        .setDescription('The Invoice API description')
+        .setVersion('1.0')
+        .addTag('shako-invoice')
+        .addBearerAuth()
+        .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('dis-api', app, document);
 
-  const configService = app.get(ConfigService);
-  const port = configService.get<number>('PORT');
+    const configService = app.get(ConfigService);
+    const port = configService.get<number>('PORT');
 
-  await app.listen(port);
+    await app.listen(port);
 
-  logger.log(`Documentation is running in http://localhost:${port}/dis-api`);
-  logger.log(`Api is running in http://localhost:${port}`);
+    logger.log(`Documentation is running in http://localhost:${port}/dis-api`);
+    logger.log(`Api is running in http://localhost:${port}`);
 }
 bootstrap();

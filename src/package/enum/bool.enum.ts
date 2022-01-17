@@ -1,4 +1,4 @@
 export enum BoolEnum {
-  YES = 1,
-  NO = 0,
+    YES = 1,
+    NO = 0,
 }

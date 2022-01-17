@@ -7,25 +7,19 @@ import { InvoiceModule } from './api/invoice/invoice.module';
 import { ProductModule } from './api/product/product.module';
 import { AuthMiddleware } from './package/middlewares/auth.middleware';
 import { publicUrls } from './public.url';
+import { StockModule } from './api/stock/stock.module';
 
 @Module({
-  imports: [
-    configEnvironment(),
-    configMongo(),
-    UserModule,
-    ClientModule,
-    ProductModule,
-    InvoiceModule,
-  ],
-  controllers: [],
-  providers: [],
-  exports: [],
+    imports: [configEnvironment(), configMongo(), UserModule, ClientModule, ProductModule, StockModule, InvoiceModule],
+    controllers: [],
+    providers: [],
+    exports: [],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .exclude(...publicUrls)
-      .forRoutes('*');
-  }
+    configure(consumer: MiddlewareConsumer) {
+        consumer
+            .apply(AuthMiddleware)
+            .exclude(...publicUrls)
+            .forRoutes('*');
+    }
 }

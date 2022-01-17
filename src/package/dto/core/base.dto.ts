@@ -3,21 +3,21 @@ import { ActiveStatus } from '../../enum/active.enum';
 import { Types } from 'mongoose';
 
 export class BaseDto {
-  @Allow()
-  _id: string | Types.ObjectId;
+    @Allow()
+    _id: string | Types.ObjectId;
 
-  @Allow()
-  __v: number;
+    @Allow()
+    __v: number;
 
-  @Allow()
-  isActive: ActiveStatus;
+    @Allow()
+    isActive: ActiveStatus;
 
-  @Allow()
-  createdBy: string | null | Types.ObjectId;
+    @Allow()
+    createdBy: string | null | Types.ObjectId;
 
-  @Allow()
-  createdAt: Date;
+    @Allow()
+    createdAt: Date;
 
-  @Allow()
-  updatedAt: Date;
+    @Allow()
+    updatedAt: Date;
 }

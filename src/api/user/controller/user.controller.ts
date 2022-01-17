@@ -7,32 +7,32 @@ import { UserDto } from '../../../package/dto/user.dto';
 @ApiTags('User')
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserService) {}
 
-  @Post('login')
-  async login(
-    @Body(
-      new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-      }),
-    )
-    loginDto: LoginDto,
-  ) {
-    return await this.userService.login(loginDto);
-  }
+    @Post('login')
+    async login(
+        @Body(
+            new ValidationPipe({
+                whitelist: true,
+                forbidNonWhitelisted: true,
+            }),
+        )
+        loginDto: LoginDto,
+    ) {
+        return await this.userService.login(loginDto);
+    }
 
-  @ApiBearerAuth()
-  @Post('register')
-  async register(
-    @Body(
-      new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-      }),
-    )
-    registerDto: UserDto,
-  ) {
-    return await this.userService.register(registerDto);
-  }
+    @ApiBearerAuth()
+    @Post('register')
+    async register(
+        @Body(
+            new ValidationPipe({
+                whitelist: true,
+                forbidNonWhitelisted: true,
+            }),
+        )
+        registerDto: UserDto,
+    ) {
+        return await this.userService.register(registerDto);
+    }
 }
