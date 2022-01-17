@@ -36,6 +36,11 @@ export class StockController {
         return this.stockService.findById(id);
     }
 
+    @Get('product/:id')
+    async findByProductId(@Param('id') id: string): Promise<StockEntity[]> {
+        return this.stockService.findByProductId(id);
+    }
+
     @Put('update/:id')
     async update(
         @Param('id', new ParseObjectIdPipe()) id: string,
