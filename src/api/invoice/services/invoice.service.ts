@@ -86,7 +86,7 @@ export class InvoiceService {
     }
 
     async generateUniqueInvoiceNo(): Promise<string> {
-        const prefix = 'inv-';
+        const prefix = 'INV-';
         const randomString = (toLength) => {
             const salt = '0123456789';
             const saltLength = salt.length;
