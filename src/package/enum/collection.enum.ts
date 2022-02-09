@@ -4,4 +4,6 @@ export enum CollectionEnum {
     INVOICES = 'invoices',
     PRODUCTS = 'products',
     STOCK = 'stock',
+    GROUPS = 'groups',
+    PERMISSION = 'permissions',
 }
