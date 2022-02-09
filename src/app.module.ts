@@ -9,9 +9,10 @@ import {AuthMiddleware} from './package/middlewares/auth.middleware';
 import {publicUrls} from './public.url';
 import {StockModule} from './api/stock/stock.module';
 import {GroupModule} from './api/groups/group.module';
+import {PermissionModule} from './api/permission/permission.module';
 
 @Module({
-    imports: [configEnvironment(), configMongo(), UserModule, GroupModule, ClientModule, ProductModule, StockModule, InvoiceModule],
+    imports: [configEnvironment(), configMongo(), UserModule, GroupModule, PermissionModule, ClientModule, ProductModule, StockModule, InvoiceModule],
     controllers: [],
     providers: [],
     exports: [],
