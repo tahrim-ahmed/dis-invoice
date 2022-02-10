@@ -20,9 +20,15 @@ export class UserController {
                 forbidNonWhitelisted: true,
             }),
         )
-        loginDto: LoginDto,
+            loginDto: LoginDto,
     ) {
         return await this.userService.login(loginDto);
+    }
+
+    @ApiBearerAuth()
+    @Get('refresh')
+    async refresh() {
+        return await this.userService.refresh();
     }
 
     @ApiBearerAuth()

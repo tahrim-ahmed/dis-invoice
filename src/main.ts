@@ -1,8 +1,8 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import {NestFactory} from '@nestjs/core';
+import {AppModule} from './app.module';
+import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
+import {Logger} from '@nestjs/common';
+import {ConfigService} from '@nestjs/config';
 
 async function bootstrap() {
     const logger = new Logger('Invoice-api-bootstrap');
@@ -22,6 +22,8 @@ async function bootstrap() {
 
     const configService = app.get(ConfigService);
     const port = configService.get<number>('PORT');
+
+    app.enableCors();
 
     await app.listen(port);
 

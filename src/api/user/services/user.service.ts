@@ -43,6 +43,10 @@ export class UserService {
         }
     };
 
+    refresh = async (): Promise<number> => {
+        return this.createdByAppendService.returnRequestToken();
+    };
+
     async pagination(page: number, limit?: number): Promise<UserDocument[]> {
         const query = this.userModel.find().where({isActive: true});
         if (page && limit) {

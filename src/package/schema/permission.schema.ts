@@ -32,7 +32,7 @@ export class PermissionEntity {
     @Prop({type: Boolean, default: true})
     isActive: boolean;
 
-    @Prop({type: SchemaTypes.ObjectId, ref: UserEntity.name})
+    @Prop({type: SchemaTypes.ObjectId, ref: 'UserEntity'})
     createdBy: Types.ObjectId;
 }
 
