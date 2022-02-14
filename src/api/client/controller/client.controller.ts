@@ -1,17 +1,16 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe} from '@nestjs/common';
-import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
-import {ClientService} from '../services/client.service';
-import {ClientDto} from '../../../package/dto/client.dto';
-import {PaginationDto} from '../../../package/dto/pagination/pagination.dto';
-import {ParseObjectIdPipe} from '../../../package/pipes/parse-objectid.pipe';
-import {ClientEntity} from '../../../package/schema/client.schema';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ClientService } from '../services/client.service';
+import { ClientDto } from '../../../package/dto/client.dto';
+import { PaginationDto } from '../../../package/dto/pagination/pagination.dto';
+import { ParseObjectIdPipe } from '../../../package/pipes/parse-objectid.pipe';
+import { ClientEntity } from '../../../package/schema/client.schema';
 
 @ApiTags('Client')
 @ApiBearerAuth()
 @Controller('client')
 export class ClientController {
-    constructor(private readonly clientService: ClientService) {
-    }
+    constructor(private readonly clientService: ClientService) {}
 
     @Post('create')
     async create(
@@ -21,13 +20,13 @@ export class ClientController {
                 forbidNonWhitelisted: true,
             }),
         )
-            clientDto: ClientDto,
+        clientDto: ClientDto,
     ) {
         return await this.clientService.createClient(clientDto);
     }
 
     @Get('pagination')
-    async pagination(@Query() {skip, limit}: PaginationDto): Promise<ClientEntity[]> {
+    async pagination(@Query() { skip, limit }: PaginationDto): Promise<ClientEntity[]> {
         return this.clientService.pagination(skip, limit);
     }
 
@@ -45,7 +44,7 @@ export class ClientController {
                 forbidNonWhitelisted: true,
             }),
         )
-            clientDto: ClientDto,
+        clientDto: ClientDto,
     ) {
         return await this.clientService.update(id, clientDto);
     }

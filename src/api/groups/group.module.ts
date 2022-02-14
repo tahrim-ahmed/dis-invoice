@@ -1,10 +1,10 @@
-import {MongooseModule} from '@nestjs/mongoose';
-import {CollectionEnum} from '../../package/enum/collection.enum';
-import {Module} from '@nestjs/common';
-import {GroupController} from './controller/group.controller';
-import {GroupService} from './services/group.service';
-import {CreatedByAppendService} from '../../package/service/created-by-append.service';
-import GroupSchema, {GroupEntity} from '../../package/schema/group.schema';
+import { MongooseModule } from '@nestjs/mongoose';
+import { CollectionEnum } from '../../package/enum/collection.enum';
+import { Module } from '@nestjs/common';
+import { GroupController } from './controller/group.controller';
+import { GroupService } from './services/group.service';
+import { CreatedByAppendService } from '../../package/service/created-by-append.service';
+import GroupSchema, { GroupEntity } from '../../package/schema/group.schema';
 
 @Module({
     imports: [
@@ -19,5 +19,4 @@ import GroupSchema, {GroupEntity} from '../../package/schema/group.schema';
     controllers: [GroupController],
     providers: [GroupService, CreatedByAppendService],
 })
-export class GroupModule {
-}
+export class GroupModule {}

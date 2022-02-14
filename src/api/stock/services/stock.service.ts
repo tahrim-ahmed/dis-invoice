@@ -1,9 +1,9 @@
-import {Injectable, Logger} from '@nestjs/common';
-import {Model} from 'mongoose';
-import {InjectModel} from '@nestjs/mongoose';
-import {CreatedByAppendService} from '../../../package/service/created-by-append.service';
-import {StockDto} from '../../../package/dto/stock.dto';
-import {StockDocument, StockEntity} from '../../../package/schema/stock.schema';
+import { Injectable, Logger } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
+import { StockDto } from '../../../package/dto/stock.dto';
+import { StockDocument, StockEntity } from '../../../package/schema/stock.schema';
 
 @Injectable()
 export class StockService {
@@ -13,8 +13,7 @@ export class StockService {
         @InjectModel(StockEntity.name)
         private readonly stockModel: Model<StockDocument>,
         private readonly createdByAppendService: CreatedByAppendService,
-    ) {
-    }
+    ) {}
 
     createStock = async (stockInput: StockDto): Promise<StockDocument> => {
         // saving and returning the saved data in mongo db
@@ -72,7 +71,7 @@ export class StockService {
         try {
             return await this.stockModel
                 .findById(_id)
-                .where({isActive: true})
+                .where({ isActive: true })
                 .populate('product', 'productName packSize')
                 .populate('createdBy', 'email');
         } catch (error) {
@@ -83,8 +82,8 @@ export class StockService {
     async findByProductId(_id: string): Promise<StockDocument[]> {
         try {
             return await this.stockModel
-                .find({product: _id})
-                .where({isActive: true})
+                .find({ product: _id })
+                .where({ isActive: true })
                 .populate('product', 'productName packSize')
                 .populate('createdBy', 'email');
         } catch (error) {

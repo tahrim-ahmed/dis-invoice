@@ -1,9 +1,9 @@
-import {Injectable, Logger} from '@nestjs/common';
-import {Model} from 'mongoose';
-import {InjectModel} from '@nestjs/mongoose';
-import {CreatedByAppendService} from '../../../package/service/created-by-append.service';
-import {GroupDocument, GroupEntity} from '../../../package/schema/group.schema';
-import {GroupDto} from '../../../package/dto/group.dto';
+import { Injectable, Logger } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
+import { GroupDocument, GroupEntity } from '../../../package/schema/group.schema';
+import { GroupDto } from '../../../package/dto/group.dto';
 
 @Injectable()
 export class GroupService {
@@ -13,8 +13,7 @@ export class GroupService {
         @InjectModel(GroupEntity.name)
         private readonly groupModel: Model<GroupDocument>,
         private readonly createdByAppendService: CreatedByAppendService,
-    ) {
-    }
+    ) {}
 
     createGroup = async (groupDto: GroupDto): Promise<GroupDocument> => {
         // saving and returning the saved data in mongo db
@@ -27,7 +26,7 @@ export class GroupService {
     };
 
     async pagination(page: number, limit?: number): Promise<GroupDocument[]> {
-        const query = this.groupModel.find().where({isActive: true});
+        const query = this.groupModel.find().where({ isActive: true });
         if (page && limit) {
             query.skip((page - 1) * limit).limit(limit);
         }
@@ -39,7 +38,7 @@ export class GroupService {
     async update(id: string, groupDto: GroupDto): Promise<GroupDocument> {
         return this.groupModel.findByIdAndUpdate(
             id,
-            {...groupDto},
+            { ...groupDto },
             {
                 returnOriginal: false,
             },
@@ -51,7 +50,7 @@ export class GroupService {
             return await this.groupModel.findByIdAndUpdate(
                 _id,
                 {
-                    $set: {isActive: false},
+                    $set: { isActive: false },
                 },
                 {
                     returnOriginal: false,
@@ -63,9 +62,9 @@ export class GroupService {
     }
 
     /*************** custom () **********/
-    async findById(_id: string): Promise<GroupDocument[]> {
+    async findById(_id: any): Promise<GroupDocument[]> {
         try {
-            return await this.groupModel.findById(_id).where({isActive: true}).populate('createdBy', 'email');
+            return await this.groupModel.findById(_id).where({ isActive: true }).populate('createdBy', 'email');
         } catch (error) {
             return error;
         }

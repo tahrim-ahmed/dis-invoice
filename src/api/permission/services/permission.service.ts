@@ -1,9 +1,9 @@
-import {Injectable, Logger} from '@nestjs/common';
-import {Model} from 'mongoose';
-import {InjectModel} from '@nestjs/mongoose';
-import {CreatedByAppendService} from '../../../package/service/created-by-append.service';
-import {PermissionDocument, PermissionEntity} from '../../../package/schema/permission.schema';
-import {PermissionDto} from '../../../package/dto/permission.dto';
+import { Injectable, Logger } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
+import { PermissionDocument, PermissionEntity } from '../../../package/schema/permission.schema';
+import { PermissionDto } from '../../../package/dto/permission.dto';
 
 @Injectable()
 export class PermissionService {
@@ -13,8 +13,7 @@ export class PermissionService {
         @InjectModel(PermissionEntity.name)
         private readonly permissionModel: Model<PermissionDocument>,
         private readonly createdByAppendService: CreatedByAppendService,
-    ) {
-    }
+    ) {}
 
     createPermission = async (permissionDto: PermissionDto): Promise<PermissionDocument> => {
         // saving and returning the saved data in mongo db
@@ -27,7 +26,7 @@ export class PermissionService {
     };
 
     async pagination(page: number, limit?: number): Promise<PermissionDocument[]> {
-        const query = this.permissionModel.find().where({isActive: true});
+        const query = this.permissionModel.find().where({ isActive: true });
         if (page && limit) {
             query.skip((page - 1) * limit).limit(limit);
         }
@@ -39,7 +38,7 @@ export class PermissionService {
     async update(id: string, permissionDto: PermissionDto): Promise<PermissionDocument> {
         return this.permissionModel.findByIdAndUpdate(
             id,
-            {...permissionDto},
+            { ...permissionDto },
             {
                 returnOriginal: false,
             },
@@ -51,7 +50,7 @@ export class PermissionService {
             return await this.permissionModel.findByIdAndUpdate(
                 _id,
                 {
-                    $set: {isActive: false},
+                    $set: { isActive: false },
                 },
                 {
                     returnOriginal: false,
@@ -63,9 +62,9 @@ export class PermissionService {
     }
 
     /*************** custom () **********/
-    async findById(_id: string): Promise<PermissionDocument[]> {
+    async findById(_id: any): Promise<PermissionDocument[]> {
         try {
-            return await this.permissionModel.findById(_id).where({isActive: true}).populate('createdBy', 'email');
+            return await this.permissionModel.findById(_id).where({ isActive: true }).populate('createdBy', 'email');
         } catch (error) {
             return error;
         }
