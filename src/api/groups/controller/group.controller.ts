@@ -1,18 +1,17 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe} from '@nestjs/common';
-import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
-import {GroupService} from '../services/group.service';
-import {PaginationDto} from '../../../package/dto/pagination/pagination.dto';
-import {ParseObjectIdPipe} from '../../../package/pipes/parse-objectid.pipe';
-import {GroupDto} from '../../../package/dto/group.dto';
-import {GroupEntity} from '../../../package/schema/group.schema';
-import {ApiImplicitQuery} from '@nestjs/swagger/dist/decorators/api-implicit-query.decorator';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { GroupService } from '../services/group.service';
+import { PaginationDto } from '../../../package/dto/pagination/pagination.dto';
+import { ParseObjectIdPipe } from '../../../package/pipes/parse-objectid.pipe';
+import { GroupDto } from '../../../package/dto/group.dto';
+import { GroupEntity } from '../../../package/schema/group.schema';
+import { ApiImplicitQuery } from '@nestjs/swagger/dist/decorators/api-implicit-query.decorator';
 
 @ApiTags('Group')
 @ApiBearerAuth()
 @Controller('group')
 export class GroupController {
-    constructor(private readonly groupService: GroupService) {
-    }
+    constructor(private readonly groupService: GroupService) {}
 
     @Post('create')
     async create(
@@ -22,7 +21,7 @@ export class GroupController {
                 forbidNonWhitelisted: true,
             }),
         )
-            groupDto: GroupDto,
+        groupDto: GroupDto,
     ) {
         return await this.groupService.createGroup(groupDto);
     }
@@ -38,7 +37,7 @@ export class GroupController {
     }
 
     @Get('pagination')
-    async pagination(@Query() {skip, limit}: PaginationDto): Promise<GroupEntity[]> {
+    async pagination(@Query() { skip, limit }: PaginationDto): Promise<GroupEntity[]> {
         return this.groupService.pagination(skip, limit);
     }
 

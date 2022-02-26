@@ -1,15 +1,15 @@
-import {Injectable, Logger, UnauthorizedException} from '@nestjs/common';
-import {Model} from 'mongoose';
-import {InjectModel} from '@nestjs/mongoose';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
-import {BcryptService} from './bcrypt.service';
-import {UserDocument, UserEntity} from '../../../package/schema/user.schema';
-import {NotFoundService} from '../../../package/service/not-found.service';
-import {UserDto} from '../../../package/dto/user.dto';
-import {TokenDto} from '../../../package/dto/token.dto';
-import {LoginDto} from '../../../package/dto/login.dto';
-import {CreatedByAppendService} from '../../../package/service/created-by-append.service';
+import { BcryptService } from './bcrypt.service';
+import { UserDocument, UserEntity } from '../../../package/schema/user.schema';
+import { NotFoundService } from '../../../package/service/not-found.service';
+import { UserDto } from '../../../package/dto/user.dto';
+import { TokenDto } from '../../../package/dto/token.dto';
+import { LoginDto } from '../../../package/dto/login.dto';
+import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
 
 @Injectable()
 export class UserService {
