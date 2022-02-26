@@ -1,17 +1,17 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsMongoId, IsNotEmpty, IsString, MaxLength } from 'class-validator';
-import { BaseDto } from './core/base.dto';
-import { Types } from 'mongoose';
+import {ApiProperty} from '@nestjs/swagger';
+import {IsEmail, IsMongoId, IsNotEmpty, IsString, MaxLength} from 'class-validator';
+import {BaseDto} from './core/base.dto';
+import {Types} from 'mongoose';
 
 export class UserDto extends BaseDto {
     @ApiProperty()
-    @IsString({ message: 'Must be a string' })
-    @MaxLength(100, { message: 'Maximum 100 characters supported' })
+    @IsString({message: 'Must be a string'})
+    @MaxLength(100, {message: 'Maximum 100 characters supported'})
     firstName: string;
 
     @ApiProperty()
-    @IsString({ message: 'Must be a string' })
-    @MaxLength(100, { message: 'Maximum 100 characters supported' })
+    @IsString({message: 'Must be a string'})
+    @MaxLength(100, {message: 'Maximum 100 characters supported'})
     lastName: string;
 
     @ApiProperty()

@@ -1,9 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
-import { StockDto } from '../../../package/dto/stock.dto';
-import { StockDocument, StockEntity } from '../../../package/schema/stock.schema';
+import {Injectable, Logger} from '@nestjs/common';
+import {Model} from 'mongoose';
+import {InjectModel} from '@nestjs/mongoose';
+import {CreatedByAppendService} from '../../../package/service/created-by-append.service';
+import {StockDto} from '../../../package/dto/stock.dto';
+import {StockDocument, StockEntity} from '../../../package/schema/stock.schema';
 
 @Injectable()
 export class StockService {
@@ -13,7 +13,8 @@ export class StockService {
         @InjectModel(StockEntity.name)
         private readonly stockModel: Model<StockDocument>,
         private readonly createdByAppendService: CreatedByAppendService,
-    ) {}
+    ) {
+    }
 
     createStock = async (stockInput: StockDto): Promise<StockDocument> => {
         // saving and returning the saved data in mongo db

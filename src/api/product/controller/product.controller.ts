@@ -1,16 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ProductService } from '../services/product.service';
-import { ProductDto } from '../../../package/dto/product.dto';
-import { PaginationDto } from '../../../package/dto/pagination/pagination.dto';
-import { ParseObjectIdPipe } from '../../../package/pipes/parse-objectid.pipe';
-import { ProductEntity } from '../../../package/schema/product.schema';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe} from '@nestjs/common';
+import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
+import {ProductService} from '../services/product.service';
+import {ProductDto} from '../../../package/dto/product.dto';
+import {PaginationDto} from '../../../package/dto/pagination/pagination.dto';
+import {ParseObjectIdPipe} from '../../../package/pipes/parse-objectid.pipe';
+import {ProductEntity} from '../../../package/schema/product.schema';
 
 @ApiTags('Product')
 @ApiBearerAuth()
 @Controller('product')
 export class ProductController {
-    constructor(private readonly productService: ProductService) {}
+    constructor(private readonly productService: ProductService) {
+    }
 
     @Post('create')
     async create(

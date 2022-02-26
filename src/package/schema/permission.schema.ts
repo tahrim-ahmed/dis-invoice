@@ -1,16 +1,16 @@
 import * as mongoose from 'mongoose';
-import { SchemaTypes, Types } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { CrudDto } from '../dto/core/crud.dto';
+import {SchemaTypes, Types} from 'mongoose';
+import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
+import {CrudDto} from '../dto/core/crud.dto';
 
 @Schema({
     timestamps: true,
 })
 export class PermissionEntity {
-    @Prop({ type: String, required: true })
+    @Prop({type: String, required: true})
     name: string;
 
-    @Prop({ type: Object })
+    @Prop({type: Object})
     client: CrudDto;
 
     @Prop({ type: Object })

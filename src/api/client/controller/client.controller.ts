@@ -1,10 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ClientService } from '../services/client.service';
-import { ClientDto } from '../../../package/dto/client.dto';
-import { PaginationDto } from '../../../package/dto/pagination/pagination.dto';
-import { ParseObjectIdPipe } from '../../../package/pipes/parse-objectid.pipe';
-import { ClientEntity } from '../../../package/schema/client.schema';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe} from '@nestjs/common';
+import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
+import {ClientService} from '../services/client.service';
+import {ClientDto} from '../../../package/dto/client.dto';
+import {PaginationDto} from '../../../package/dto/pagination/pagination.dto';
+import {ParseObjectIdPipe} from '../../../package/pipes/parse-objectid.pipe';
+import {ClientEntity} from '../../../package/schema/client.schema';
 
 @ApiTags('Client')
 @ApiBearerAuth()

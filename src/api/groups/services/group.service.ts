@@ -1,9 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
-import { GroupDocument, GroupEntity } from '../../../package/schema/group.schema';
-import { GroupDto } from '../../../package/dto/group.dto';
+import {BadRequestException, Injectable, Logger} from '@nestjs/common';
+import {Model} from 'mongoose';
+import {InjectModel} from '@nestjs/mongoose';
+import {CreatedByAppendService} from '../../../package/service/created-by-append.service';
+import {GroupDocument, GroupEntity} from '../../../package/schema/group.schema';
+import {GroupDto} from '../../../package/dto/group.dto';
 
 @Injectable()
 export class GroupService {
@@ -13,7 +13,8 @@ export class GroupService {
         @InjectModel(GroupEntity.name)
         private readonly groupModel: Model<GroupDocument>,
         private readonly createdByAppendService: CreatedByAppendService,
-    ) {}
+    ) {
+    }
 
     createGroup = async (groupDto: GroupDto): Promise<GroupDocument> => {
         // saving and returning the saved data in mongo db
@@ -25,8 +26,31 @@ export class GroupService {
         }
     };
 
+    async search(search: string): Promise<GroupDocument[]> {
+        //search = search.toLowerCase();
+        let searchValue: any = search;
+        try {
+            searchValue = new RegExp([search].join(''), 'i');
+        } catch (e) {
+            const msg = 'Invalid Search Character!';
+
+            throw new BadRequestException(msg);
+        }
+
+        console.log(searchValue);
+        return await this.groupModel
+            .aggregate([
+                {
+                    $match: {
+                        name: searchValue,
+                    },
+                },
+            ])
+            .exec();
+    }
+
     async pagination(page: number, limit?: number): Promise<GroupDocument[]> {
-        const query = this.groupModel.find().where({ isActive: true });
+        const query = this.groupModel.find().where({isActive: true});
         if (page && limit) {
             query.skip((page - 1) * limit).limit(limit);
         }

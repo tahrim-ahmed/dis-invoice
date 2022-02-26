@@ -1,16 +1,14 @@
-import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
-import { NextFunction, Request, Response } from 'express';
+import {HttpStatus, Injectable, NestMiddleware} from '@nestjs/common';
+import {NextFunction, Request, Response} from 'express';
 import * as jwt from 'jsonwebtoken';
 import * as fs from 'fs';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
     private static toResponse(res: Response, message: string): Response {
-        return res
-            .json({
-                message,
-            })
-            .status(HttpStatus.UNAUTHORIZED);
+        return res.status(HttpStatus.UNAUTHORIZED).json({
+            message,
+        });
     }
 
     async use(req: Request, res: Response, next: NextFunction) {
