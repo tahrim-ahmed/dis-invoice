@@ -1,9 +1,9 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
-import { GroupDocument, GroupEntity } from '../../../package/schema/group.schema';
-import { GroupDto } from '../../../package/dto/group.dto';
+import {BadRequestException, Injectable, Logger} from '@nestjs/common';
+import {Model} from 'mongoose';
+import {InjectModel} from '@nestjs/mongoose';
+import {CreatedByAppendService} from '../../../package/service/created-by-append.service';
+import {GroupDocument, GroupEntity} from '../../../package/schema/group.schema';
+import {GroupDto} from '../../../package/dto/group.dto';
 
 @Injectable()
 export class GroupService {
@@ -13,7 +13,8 @@ export class GroupService {
         @InjectModel(GroupEntity.name)
         private readonly groupModel: Model<GroupDocument>,
         private readonly createdByAppendService: CreatedByAppendService,
-    ) {}
+    ) {
+    }
 
     createGroup = async (groupDto: GroupDto): Promise<GroupDocument> => {
         // saving and returning the saved data in mongo db
@@ -36,7 +37,6 @@ export class GroupService {
             throw new BadRequestException(msg);
         }
 
-        console.log(searchValue);
         return await this.groupModel
             .aggregate([
                 {

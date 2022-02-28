@@ -1,9 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { ProductDocument, ProductEntity } from '../../../package/schema/product.schema';
-import { ProductDto } from '../../../package/dto/product.dto';
-import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
+import {BadRequestException, Injectable, Logger} from '@nestjs/common';
+import {Model} from 'mongoose';
+import {InjectModel} from '@nestjs/mongoose';
+import {ProductDocument, ProductEntity} from '../../../package/schema/product.schema';
+import {ProductDto} from '../../../package/dto/product.dto';
+import {CreatedByAppendService} from '../../../package/service/created-by-append.service';
 
 @Injectable()
 export class ProductService {
@@ -13,7 +13,8 @@ export class ProductService {
         @InjectModel(ProductEntity.name)
         private readonly productModel: Model<ProductDocument>,
         private readonly createdByAppendService: CreatedByAppendService,
-    ) {}
+    ) {
+    }
 
     createProduct = async (productInput: ProductDto): Promise<ProductDocument> => {
         // saving and returning the saved data in mongo db
@@ -25,8 +26,30 @@ export class ProductService {
         }
     };
 
+    async search(search: string): Promise<ProductDocument[]> {
+        //search = search.toLowerCase();
+        let searchValue: any = search;
+        try {
+            searchValue = new RegExp([search].join(''), 'i');
+        } catch (e) {
+            const msg = 'Invalid Search Character!';
+
+            throw new BadRequestException(msg);
+        }
+
+        return await this.productModel
+            .aggregate([
+                {
+                    $match: {
+                        productName: searchValue,
+                    },
+                },
+            ])
+            .exec();
+    }
+
     async pagination(page: number, limit?: number): Promise<ProductDocument[]> {
-        const query = this.productModel.find().where({ isActive: true });
+        const query = this.productModel.find().where({isActive: true});
         if (page && limit) {
             query.skip((page - 1) * limit).limit(limit);
         }

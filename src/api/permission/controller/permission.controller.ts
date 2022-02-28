@@ -1,17 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { PermissionService } from '../services/permission.service';
-import { PaginationDto } from '../../../package/dto/pagination/pagination.dto';
-import { ParseObjectIdPipe } from '../../../package/pipes/parse-objectid.pipe';
-import { PermissionDto } from '../../../package/dto/permission.dto';
-import { PermissionEntity } from '../../../package/schema/permission.schema';
-import { ApiImplicitQuery } from '@nestjs/swagger/dist/decorators/api-implicit-query.decorator';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe} from '@nestjs/common';
+import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
+import {PermissionService} from '../services/permission.service';
+import {PaginationDto} from '../../../package/dto/pagination/pagination.dto';
+import {ParseObjectIdPipe} from '../../../package/pipes/parse-objectid.pipe';
+import {PermissionDto} from '../../../package/dto/permission.dto';
+import {PermissionEntity} from '../../../package/schema/permission.schema';
+import {ApiImplicitQuery} from '@nestjs/swagger/dist/decorators/api-implicit-query.decorator';
 
 @ApiTags('Permission')
 @ApiBearerAuth()
 @Controller('permission')
 export class PermissionController {
-    constructor(private readonly permissionService: PermissionService) {}
+    constructor(private readonly permissionService: PermissionService) {
+    }
 
     @Post('create')
     async create(

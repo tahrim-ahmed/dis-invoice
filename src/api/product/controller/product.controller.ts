@@ -1,16 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ProductService } from '../services/product.service';
-import { ProductDto } from '../../../package/dto/product.dto';
-import { PaginationDto } from '../../../package/dto/pagination/pagination.dto';
-import { ParseObjectIdPipe } from '../../../package/pipes/parse-objectid.pipe';
-import { ProductEntity } from '../../../package/schema/product.schema';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe} from '@nestjs/common';
+import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
+import {ProductService} from '../services/product.service';
+import {ProductDto} from '../../../package/dto/product.dto';
+import {PaginationDto} from '../../../package/dto/pagination/pagination.dto';
+import {ParseObjectIdPipe} from '../../../package/pipes/parse-objectid.pipe';
+import {ProductEntity} from '../../../package/schema/product.schema';
+import {ApiImplicitQuery} from '@nestjs/swagger/dist/decorators/api-implicit-query.decorator';
 
 @ApiTags('Product')
 @ApiBearerAuth()
 @Controller('product')
 export class ProductController {
-    constructor(private readonly productService: ProductService) {}
+    constructor(private readonly productService: ProductService) {
+    }
 
     @Post('create')
     async create(
@@ -20,13 +22,23 @@ export class ProductController {
                 forbidNonWhitelisted: true,
             }),
         )
-        productDto: ProductDto,
+            productDto: ProductDto,
     ) {
         return await this.productService.createProduct(productDto);
     }
 
+    @ApiImplicitQuery({
+        name: 'search',
+        required: true,
+        type: String,
+    })
+    @Get('search')
+    async search(@Query('search') search: string): Promise<ProductEntity[]> {
+        return this.productService.search(search);
+    }
+
     @Get('pagination')
-    async pagination(@Query() { skip, limit }: PaginationDto): Promise<ProductEntity[]> {
+    async pagination(@Query() {skip, limit}: PaginationDto): Promise<ProductEntity[]> {
         return this.productService.pagination(skip, limit);
     }
 

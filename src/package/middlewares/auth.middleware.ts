@@ -1,5 +1,5 @@
-import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
-import { NextFunction, Request, Response } from 'express';
+import {HttpStatus, Injectable, NestMiddleware} from '@nestjs/common';
+import {NextFunction, Request, Response} from 'express';
 import * as jwt from 'jsonwebtoken';
 import * as fs from 'fs';
 

@@ -1,9 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
-import { ClientDocument, ClientEntity } from '../../../package/schema/client.schema';
-import { ClientDto } from '../../../package/dto/client.dto';
+import {BadRequestException, Injectable, Logger} from '@nestjs/common';
+import {Model} from 'mongoose';
+import {InjectModel} from '@nestjs/mongoose';
+import {CreatedByAppendService} from '../../../package/service/created-by-append.service';
+import {ClientDocument, ClientEntity} from '../../../package/schema/client.schema';
+import {ClientDto} from '../../../package/dto/client.dto';
 
 @Injectable()
 export class ClientService {
@@ -13,7 +13,8 @@ export class ClientService {
         @InjectModel(ClientEntity.name)
         private readonly clientModel: Model<ClientDocument>,
         private readonly createdByAppendService: CreatedByAppendService,
-    ) {}
+    ) {
+    }
 
     createClient = async (clientInput: ClientDto): Promise<ClientDocument> => {
         // saving and returning the saved data in mongo db
@@ -25,8 +26,30 @@ export class ClientService {
         }
     };
 
+    async search(search: string): Promise<ClientDocument[]> {
+        //search = search.toLowerCase();
+        let searchValue: any = search;
+        try {
+            searchValue = new RegExp([search].join(''), 'i');
+        } catch (e) {
+            const msg = 'Invalid Search Character!';
+
+            throw new BadRequestException(msg);
+        }
+
+        return await this.clientModel
+            .aggregate([
+                {
+                    $match: {
+                        name: searchValue,
+                    },
+                },
+            ])
+            .exec();
+    }
+
     async pagination(page: number, limit?: number): Promise<ClientDocument[]> {
-        const query = this.clientModel.find().where({ isActive: true });
+        const query = this.clientModel.find().where({isActive: true});
         if (page && limit) {
             query.skip((page - 1) * limit).limit(limit);
         }

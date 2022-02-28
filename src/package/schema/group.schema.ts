@@ -1,16 +1,16 @@
 import * as mongoose from 'mongoose';
-import { SchemaTypes, Types } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Transform } from 'class-transformer';
+import {SchemaTypes, Types} from 'mongoose';
+import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
+import {Transform} from 'class-transformer';
 
 @Schema({
     timestamps: true,
 })
 export class GroupEntity {
-    @Transform(({ value }) => value.toString())
+    @Transform(({value}) => value.toString())
     _id: string;
 
-    @Prop({ type: String, required: true })
+    @Prop({type: String, required: true})
     name: string;
 
     @Prop({ type: String, required: true })
