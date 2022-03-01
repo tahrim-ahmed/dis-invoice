@@ -11,7 +11,7 @@ export class LoginDto {
     @ApiProperty()
     @IsNotEmpty({message: 'Must be non empty'})
     @IsString({message: 'Must be a string'})
-    @MaxLength(100, { message: 'Maximum 100 characters supported' })
+    @MaxLength(100, {message: 'Maximum 100 characters supported'})
     password: string;
 
     @ApiProperty({ default: 1 })

@@ -11,7 +11,7 @@ export class GroupDto extends BaseDto {
 
     @ApiProperty()
     @IsNotEmpty({message: 'Must be non empty'})
-    @IsString({ message: 'Must be a string' })
+    @IsString({message: 'Must be a string'})
     @MaxLength(300, { message: 'Maximum 300 characters supported' })
     description: string;
 }

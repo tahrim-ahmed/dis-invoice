@@ -1,15 +1,15 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
+import {Injectable, Logger, UnauthorizedException} from '@nestjs/common';
+import {Model} from 'mongoose';
+import {InjectModel} from '@nestjs/mongoose';
 import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
-import { BcryptService } from './bcrypt.service';
-import { UserDocument, UserEntity } from '../../../package/schema/user.schema';
-import { NotFoundService } from '../../../package/service/not-found.service';
-import { UserDto } from '../../../package/dto/user.dto';
-import { TokenDto } from '../../../package/dto/token.dto';
-import { LoginDto } from '../../../package/dto/login.dto';
-import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
+import {BcryptService} from './bcrypt.service';
+import {UserDocument, UserEntity} from '../../../package/schema/user.schema';
+import {NotFoundService} from '../../../package/service/not-found.service';
+import {UserDto} from '../../../package/dto/user.dto';
+import {TokenDto} from '../../../package/dto/token.dto';
+import {LoginDto} from '../../../package/dto/login.dto';
+import {CreatedByAppendService} from '../../../package/service/created-by-append.service';
 
 @Injectable()
 export class UserService {
@@ -48,13 +48,27 @@ export class UserService {
     };
 
     async pagination(page: number, limit?: number): Promise<UserDocument[]> {
-        const query = this.userModel.find().where({ isActive: true });
+        const query = this.userModel.find().where({isActive: true});
         if (page && limit) {
             query.skip((page - 1) * limit).limit(limit);
         }
         query.populate('createdBy', 'email').populate('permission').populate('group', 'name description');
 
         return await query.exec();
+    }
+
+    async update(id: string, userDto: UserDto): Promise<UserDocument> {
+        if (userDto.password) {
+            userDto.password = await this.bcryptService.hashPassword(userDto.password);
+        }
+
+        return this.userModel.findByIdAndUpdate(
+            id,
+            {...userDto},
+            {
+                returnOriginal: false,
+            },
+        );
     }
 
     /*************** custom () **********/
@@ -96,7 +110,7 @@ export class UserService {
         const timeOut = Number(isRemembered) === 1 ? 24 : 1;
         token.timeout = new Date(new Date().getTime() + timeOut * 60 * 60 * 1000);
 
-        const findByEmail = await this.getUserByEmail(user._id);
+        const findByEmail = await this.getUserById(user._id);
 
         token.firstName = findByEmail.firstName;
         token.lastName = findByEmail.lastName;
@@ -107,9 +121,9 @@ export class UserService {
         return token;
     };
 
-    getUserByEmail = async (_id: string): Promise<UserDocument> => {
+    getUserById = async (_id: string): Promise<UserDocument> => {
         return this.userModel
-            .findById({ _id: _id })
+            .findById({_id: _id})
             .populate('group', 'name')
             .populate('permission', 'name client group invoice product stock users');
     };
