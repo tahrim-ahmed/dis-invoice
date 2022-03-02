@@ -1,17 +1,17 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Allow, IsArray, IsDateString, IsDefined, IsEnum, IsMongoId, IsNotEmpty, IsNumber, ValidateIf } from 'class-validator';
-import { Types } from 'mongoose';
-import { PaymentEnum } from '../enum/payment.enum';
-import { BaseDto } from './core/base.dto';
-import { InvoiceProductDto } from './invoice-product.dto';
+import {ApiProperty} from '@nestjs/swagger';
+import {Allow, IsArray, IsDateString, IsDefined, IsEnum, IsMongoId, IsNotEmpty, IsNumber, IsOptional, ValidateIf} from 'class-validator';
+import {Types} from 'mongoose';
+import {PaymentEnum} from '../enum/payment.enum';
+import {BaseDto} from './core/base.dto';
+import {InvoiceProductDto} from './invoice-product.dto';
 
 export class InvoiceDto extends BaseDto {
     @Allow()
     invoiceNo: string;
 
     @ApiProperty()
-    @IsNotEmpty({ message: 'Must be non empty' })
-    @IsNumber({ maxDecimalPlaces: 2, allowInfinity: false, allowNaN: false }, { message: 'Must be a decimal' })
+    @IsNotEmpty({message: 'Must be non empty'})
+    @IsNumber({maxDecimalPlaces: 2, allowInfinity: false, allowNaN: false}, {message: 'Must be a decimal'})
     totalAmount: number;
 
     @ApiProperty({ default: 1 })
@@ -21,8 +21,9 @@ export class InvoiceDto extends BaseDto {
 
     @ApiProperty()
     @ValidateIf((o) => o.paymentType === PaymentEnum.credit)
-    @IsDateString({ strict: true }, { message: 'Must be a valid Date' })
-    creditPeriod: Date;
+    @IsDateString({strict: true}, {message: 'Must be a valid Date'})
+    @IsOptional()
+    creditPeriod?: Date;
 
     @ApiProperty({ type: Types.ObjectId })
     @IsNotEmpty({ message: 'Client id must not be empty' })
