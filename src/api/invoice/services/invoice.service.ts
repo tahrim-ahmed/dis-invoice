@@ -1,9 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { InvoiceDocument, InvoiceEntity } from '../../../package/schema/invoice.schema';
-import { InvoiceDto } from '../../../package/dto/invoice.dto';
-import { CreatedByAppendService } from '../../../package/service/created-by-append.service';
+import {Injectable, Logger} from '@nestjs/common';
+import {Model} from 'mongoose';
+import {InjectModel} from '@nestjs/mongoose';
+import {InvoiceDocument, InvoiceEntity} from '../../../package/schema/invoice.schema';
+import {InvoiceDto} from '../../../package/dto/invoice.dto';
+import {CreatedByAppendService} from '../../../package/service/created-by-append.service';
+import {PaymentStatusEnum} from '../../../package/enum/payment-status.enum';
 
 @Injectable()
 export class InvoiceService {
@@ -13,7 +14,8 @@ export class InvoiceService {
         @InjectModel(InvoiceEntity.name)
         private readonly invoiceModel: Model<InvoiceDocument>,
         private readonly createdByAppendService: CreatedByAppendService,
-    ) {}
+    ) {
+    }
 
     createInvoice = async (invoiceInput: InvoiceDto): Promise<InvoiceDocument> => {
         // saving and returning the saved data in mongo db
@@ -22,7 +24,13 @@ export class InvoiceService {
             invoiceInput.products = (invoiceInput.products || []).filter((product, productIndex, products) => {
                 return productIndex === products.findIndex((prod) => prod.productID === product.productID);
             });
+            if (invoiceInput.paymentType === 1) {
+                invoiceInput.paymentStatus = PaymentStatusEnum.unpaid;
+            } else {
+                invoiceInput.paymentStatus = PaymentStatusEnum.paid;
+            }
             invoiceInput = this.createdByAppendService.createdBy<InvoiceDto>(invoiceInput);
+
             return await this.invoiceModel.create(invoiceInput);
         } catch (e) {
             return e;
@@ -48,7 +56,17 @@ export class InvoiceService {
         });
         return this.invoiceModel.findByIdAndUpdate(
             id,
-            { ...invoiceData },
+            {...invoiceData},
+            {
+                returnOriginal: false,
+            },
+        );
+    }
+
+    async paid(id: string): Promise<InvoiceDocument> {
+        return this.invoiceModel.findByIdAndUpdate(
+            id,
+            {paymentStatus: PaymentStatusEnum.paid},
             {
                 returnOriginal: false,
             },
@@ -60,7 +78,7 @@ export class InvoiceService {
             return await this.invoiceModel.findByIdAndUpdate(
                 _id,
                 {
-                    $set: { isActive: false },
+                    $set: {isActive: false},
                 },
                 {
                     returnOriginal: false,

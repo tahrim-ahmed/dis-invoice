@@ -1,31 +1,34 @@
 import * as mongoose from 'mongoose';
-import { SchemaTypes, Types } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { InvoiceProductDto } from '../dto/invoice-product.dto';
+import {SchemaTypes, Types} from 'mongoose';
+import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
+import {InvoiceProductDto} from '../dto/invoice-product.dto';
 import InvoiceProductSchema from './invoice-product.schema';
-import { ClientEntity } from './client.schema';
-import { UserEntity } from './user.schema';
+import {ClientEntity} from './client.schema';
+import {UserEntity} from './user.schema';
 
 @Schema({
     timestamps: true,
 })
 export class InvoiceEntity {
-    @Prop({ type: String, required: true })
+    @Prop({type: String, required: true})
     invoiceNo: string;
 
-    @Prop({ type: Number, required: true })
+    @Prop({type: Number, required: true})
     totalAmount: number;
 
-    @Prop({ type: String, required: true })
+    @Prop({type: String, required: true})
     paymentType: string;
 
-    @Prop({ type: Date, required: false })
+    @Prop({type: String, required: true})
+    paymentStatus: string;
+
+    @Prop({type: Date, required: false})
     creditPeriod: Date;
 
-    @Prop({ type: Boolean, default: true })
+    @Prop({type: Boolean, default: true})
     isActive: boolean;
 
-    @Prop({ type: SchemaTypes.ObjectId, ref: ClientEntity.name })
+    @Prop({type: SchemaTypes.ObjectId, ref: ClientEntity.name})
     client: Types.ObjectId;
 
     @Prop({ type: [InvoiceProductSchema] })
